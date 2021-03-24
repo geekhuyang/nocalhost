@@ -46,7 +46,8 @@ func Get(c *gin.Context) {
 	}
 
 	for _, applicationModel := range result {
-		applicationModel.FillEditable(ginbase.IsAdmin(c), ginbase.LoginUser(c))
+		currentUser, _ := ginbase.LoginUser(c)
+		applicationModel.FillEditable(ginbase.IsAdmin(c), currentUser)
 	}
 
 	api.SendResponse(c, errno.OK, result)
@@ -71,7 +72,9 @@ func GetDetail(c *gin.Context) {
 		api.SendResponse(c, errno.ErrApplicationGet, nil)
 		return
 	}
-	result.FillEditable(ginbase.IsAdmin(c), ginbase.LoginUser(c))
+
+	currentUser, _ := ginbase.LoginUser(c)
+	result.FillEditable(ginbase.IsAdmin(c), currentUser)
 
 	api.SendResponse(c, errno.OK, result)
 }
@@ -181,7 +184,8 @@ func ListPermitted(c *gin.Context) {
 			// has permission
 			ok {
 
-			app.FillEditable(ginbase.IsAdmin(c), ginbase.LoginUser(c))
+			currentUser, _ := ginbase.LoginUser(c)
+			app.FillEditable(ginbase.IsAdmin(c), currentUser)
 			result = append(result, app)
 		}
 	}

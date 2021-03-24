@@ -29,6 +29,7 @@ type ApplicationService interface {
 	GetList(ctx context.Context) ([]*model.ApplicationModel, error)
 	Delete(ctx context.Context, id uint64) error
 	Update(ctx context.Context, applicationModel *model.ApplicationModel) (*model.ApplicationModel, error)
+	PublicSwitch(ctx context.Context, applicationId uint64, public uint8) error
 	Close()
 }
 
@@ -41,6 +42,10 @@ func NewApplicationService() ApplicationService {
 	return &applicationService{
 		applicationRepo: application.NewClusterRepo(db),
 	}
+}
+
+func (srv *applicationService) PublicSwitch(ctx context.Context, applicationId uint64, public uint8) error {
+	return srv.applicationRepo.PublicSwitch(ctx, applicationId, public)
 }
 
 func (srv *applicationService) GetByName(ctx context.Context, name string) (model.ApplicationModel, error) {

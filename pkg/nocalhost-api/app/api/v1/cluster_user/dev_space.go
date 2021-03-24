@@ -146,6 +146,8 @@ func (d *DevSpace) Create() (*model.ClusterUserModel, error) {
 		res = &SpaceResourceLimit{}
 	}
 
+	res.ContainerEphemeralStorage = "1Gi"
+
 	clusterDevsSetUp.CreateResouceQuota("rq-"+devNamespace, devNamespace, res.SpaceReqMem,
 		res.SpaceReqCpu, res.SpaceLimitsMem, res.SpaceLimitsCpu, res.SpaceStorageCapacity, res.SpaceEphemeralStorage,
 		res.SpacePvcCount, res.SpaceLbCount).CreateLimitRange("lr-"+devNamespace, devNamespace,

@@ -19,6 +19,10 @@ type CreateAppRequest struct {
 	Public  *uint8 `json:"public"`
 }
 
+type AppPublicSwitchRequest struct {
+	Public  *uint8 `json:"public" binding:"required"`
+}
+
 type UpdateApplicationInstallRequest struct {
 	Status *uint64 `json:"status" binding:"required"`
 }

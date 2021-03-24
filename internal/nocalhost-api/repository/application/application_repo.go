@@ -30,6 +30,7 @@ type ApplicationRepo interface {
 	PluginGetList(ctx context.Context, userId uint64) ([]*model.PluginApplicationModel, error)
 	Delete(ctx context.Context, id uint64) error
 	Update(ctx context.Context, applicationModel *model.ApplicationModel) (*model.ApplicationModel, error)
+	PublicSwitch(ctx context.Context, applicationId uint64, public uint8) error
 	Close()
 }
 
@@ -41,6 +42,14 @@ func NewClusterRepo(db *gorm.DB) ApplicationRepo {
 	return &applicationRepo{
 		db: db,
 	}
+}
+
+func (repo *applicationRepo) PublicSwitch(ctx context.Context, applicationId uint64, public uint8) error {
+	if err := repo.db.Exec("UPDATE applications SET public = ? WHERE id = ?", public, applicationId).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (repo *applicationRepo) GetByName(ctx context.Context, name string) (model.ApplicationModel, error) {
